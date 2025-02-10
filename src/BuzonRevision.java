@@ -19,10 +19,21 @@ public class BuzonRevision
             }
         }
         productos.add(producto);
+        //notifyAll(); ??
     }
 
     public synchronized Producto sacar()
     {
-        return null;
+        while (productos.size() == 0) {
+            try {
+                wait();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        Producto producto = productos.remove(0);
+        //notifyAll(); ??
+        return producto;
     }
 }

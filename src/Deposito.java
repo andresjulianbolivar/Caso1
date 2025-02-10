@@ -8,4 +8,13 @@ public class Deposito
     {
         
     }
+
+    public ArrayList<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(ArrayList<Producto> productos) {
+        this.productos = productos;
+    }
+
 }

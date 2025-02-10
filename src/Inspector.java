@@ -1,17 +1,46 @@
+import java.util.ArrayList;
+
 public class Inspector extends Thread
 {
     private static BuzonReproceso buzonReproceso;
     private static BuzonRevision buzonRevision;
     private static Deposito deposito;
 
-    private static int pedido;
+    private static int numProductosAProducir;
     private int productosAprobados;
     private int productosRechazados;
     private Producto producto;
 
     public void revisarProducto(Producto producto)
     {
+        int aleatorio = (int) (Math.random() * 100);
+        if (aleatorio % 7 == 0) {
+            if (productosRechazados < Math.floor(numProductosAProducir * 0.1)) {
+                buzonReproceso.agregar(producto);
+                productosRechazados++;
+            }
+            else {
+                ArrayList<Producto> prodsDeposito = deposito.getProductos();
+                prodsDeposito.add(producto);
+                deposito.setProductos(prodsDeposito);
+                productosAprobados++;
+            }
+        }
+        else {
+            ArrayList<Producto> prodsDeposito = deposito.getProductos();
+            prodsDeposito.add(producto);
+            deposito.setProductos(prodsDeposito);
+            productosAprobados++;
+        }
 
+    }
+
+    public void consultarBuzonRevision()
+    {
+        Producto producto = buzonRevision.sacar();
+        if (producto != null) {
+            revisarProducto(producto);
+        }
     }
 
     public static void inicializarMonitores(BuzonReproceso nBuzonReproceso, BuzonRevision nBuzonRevision, Deposito nDeposito)
@@ -23,6 +52,13 @@ public class Inspector extends Thread
 
     public void run()
     {
-        
+        while (productosAprobados != numProductosAProducir) { //variable FIN? pendiente
+            consultarBuzonRevision();
+            try {
+            Thread.sleep(1000); //??
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
