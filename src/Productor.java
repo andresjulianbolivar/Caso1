@@ -3,11 +3,45 @@ public class Productor extends Thread
     private static BuzonReproceso buzonReproceso;
     private static BuzonRevision buzonRevision;
 
+    private int id;
+
+    private int productos = 0;
+
     private Producto producto;
 
     public void procesarProducto(Producto producto)
     {
-
+        if (producto != null)
+        {
+            if (producto.darMensaje()==null)
+            {
+                int tiempo = (int) (Math.random()*100+1);
+                try 
+                {
+                    Thread.sleep(tiempo);
+                } 
+                catch (InterruptedException e) 
+                {
+                    e.printStackTrace();
+                }
+                buzonRevision.almacenar(producto);
+            }
+        }
+        else
+        {
+            producto = new Producto(String.format("%d.%d.",id,productos));
+            productos++;
+            int tiempo = (int) (Math.random()*500+1);
+            try 
+            {
+                Thread.sleep(tiempo);
+            } 
+            catch (InterruptedException e) 
+            {
+                e.printStackTrace();
+            }
+            buzonRevision.almacenar(producto);
+        }
     }
 
     public static void inicializarMonitores(BuzonReproceso nBuzonReproceso, BuzonRevision nBuzonRevision)
@@ -18,6 +52,10 @@ public class Productor extends Thread
 
     public void run()
     {
-
+        while(buzonReproceso.darFaltanProductos())
+        {
+            producto = buzonReproceso.reprocesar();
+            procesarProducto(producto);
+        }
     }
 }

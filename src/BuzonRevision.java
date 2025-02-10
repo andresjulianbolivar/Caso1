@@ -7,7 +7,18 @@ public class BuzonRevision
 
     public synchronized void almacenar(Producto producto)
     {
-
+        while(productos.size()==limite)
+        {
+            try
+            {
+                wait();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        productos.add(producto);
     }
 
     public synchronized Producto sacar()
