@@ -12,15 +12,19 @@ public class BuzonReproceso
 
     public synchronized Producto reprocesar()
     {
-        Producto nProducto = productos.remove(0);
-        if (nProducto != null)
+        if (productos.size()==0)
         {
+            return null;
+        }
+        else
+        {
+            Producto nProducto = productos.remove(0);
             if (nProducto.darMensaje() != null)
             {
                 faltanProductos = false;
             }
-        }
         return nProducto;
+        }
     }
 
     public synchronized boolean darFaltanProductos()
