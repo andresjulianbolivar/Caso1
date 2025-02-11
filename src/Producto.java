@@ -1,9 +1,9 @@
 public class Producto 
 {
-    private String id;
+    private int id;
     private String mensaje;
 
-    public Producto(String id)
+    public Producto(int id)
     {
         this.id = id;
     }
@@ -13,7 +13,7 @@ public class Producto
         this.mensaje = mensaje;
     }
 
-    public String darId()
+    public int darId()
     {
         return id;
     }

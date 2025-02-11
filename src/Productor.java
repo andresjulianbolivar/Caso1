@@ -3,10 +3,6 @@ public class Productor extends Thread
     private static BuzonReproceso buzonReproceso;
     private static BuzonRevision buzonRevision;
 
-    private int id;
-
-    private int productos = 0;
-
     private Producto producto;
 
     public void procesarProducto(Producto producto)
@@ -29,8 +25,7 @@ public class Productor extends Thread
         }
         else
         {
-            producto = new Producto(String.format("%d.%d.",id,productos));
-            productos++;
+            producto = new Producto(buzonReproceso.darContadorId());
             int tiempo = (int) (Math.random()*500+1);
             try 
             {

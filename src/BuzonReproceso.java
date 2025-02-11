@@ -4,6 +4,7 @@ public class BuzonReproceso
 {
     private ArrayList<Producto> productos;
     private boolean faltanProductos = true;
+    private int contadorId = 0;
 
     public synchronized void agregar(Producto producto)
     {
@@ -30,5 +31,12 @@ public class BuzonReproceso
     public synchronized boolean darFaltanProductos()
     {
         return faltanProductos;
+    }
+
+    public synchronized int darContadorId()
+    {
+        int id = contadorId;
+        contadorId++;
+        return id;
     }
 }
