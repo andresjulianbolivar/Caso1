@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class BuzonReproceso 
 {
-    private ArrayList<Producto> productos;
+    private ArrayList<Producto> productos = new ArrayList<Producto>();
     private boolean faltanProductos = true;
     private boolean fin = false;
     private int contadorId = 0;

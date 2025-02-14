@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class BuzonRevision 
 {
     private int limite;
-    private ArrayList<Producto> productos;
+    private ArrayList<Producto> productos = new ArrayList<Producto>();
     private boolean terminar = false;
 
     public BuzonRevision(int limite) {
