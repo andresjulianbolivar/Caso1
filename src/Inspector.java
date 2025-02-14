@@ -1,13 +1,10 @@
-import java.util.ArrayList;
-
 public class Inspector extends Thread
 {
     private static BuzonReproceso buzonReproceso;
     private static BuzonRevision buzonRevision;
     private static Deposito deposito;
 
-    private static int numProductosAProducir;
-    private int productosAprobados;
+    private static int pedido;
     private int productosRechazados;
     private Producto producto;
 
@@ -20,51 +17,63 @@ public class Inspector extends Thread
 
     public void revisarProducto(Producto producto)
     {
-        int aleatorio = (int) (Math.random() * 100);
-        if (aleatorio % 7 == 0) {
-            if (productosRechazados < Math.floor(numProductosAProducir * 0.1)) {
-                buzonReproceso.agregar(producto);
-                productosRechazados++;
+        if (deposito.getProductos()==pedido)
+        {
+            producto.setMensaje("Fin");
+            buzonReproceso.agregar(producto);
+            buzonReproceso.setFin(true);
+            System.out.println("Se ha alcanzado el pedido.");
+        }
+        else
+        {
+            int aleatorio = (int) (Math.random() * 100)+1;
+            if (aleatorio % 7 == 0) {
+                if (productosRechazados < Math.floor(pedido * 0.1)) {
+                    buzonReproceso.agregar(producto);
+                    productosRechazados++;
+                    System.out.println("Producto "+producto.darId()+" rechazado.");
+                }
+                else {
+                    //ArrayList<Producto> prodsDeposito = deposito.getProductos();
+                    deposito.entregar(producto);
+                    //deposito.setProductos(prodsDeposito)
+                }
             }
             else {
-                ArrayList<Producto> prodsDeposito = deposito.getProductos();
-                prodsDeposito.add(producto);
-                deposito.setProductos(prodsDeposito);
-                productosAprobados++;
+                //ArrayList<Producto> prodsDeposito = deposito.getProductos();
+                deposito.entregar(producto);
+                //deposito.setProductos(prodsDeposito);
+            }
+            try {
+            Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
-        else {
-            ArrayList<Producto> prodsDeposito = deposito.getProductos();
-            prodsDeposito.add(producto);
-            deposito.setProductos(prodsDeposito);
-            productosAprobados++;
-        }
-
-    }
-
-    public void consultarBuzonRevision()
-    {
-        Producto producto = buzonRevision.sacar();
-        if (producto != null) {
-            revisarProducto(producto);
-        }
-    }
-
-    public static void inicializarMonitores(BuzonReproceso nBuzonReproceso, BuzonRevision nBuzonRevision, Deposito nDeposito)
-    {
-        buzonReproceso = nBuzonReproceso;
-        buzonRevision = nBuzonRevision;
-        deposito = nDeposito;
     }
 
     public void run()
     {
-        while (productosAprobados != numProductosAProducir) { //variable FIN? pendiente
-            consultarBuzonRevision();
-            try {
-            Thread.sleep(1000); //??
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        while (!buzonRevision.darTerminar()) { //variable FIN? pendiente
+            if (buzonReproceso.darFin())
+            {
+                producto = buzonRevision.sacar();
+                if (producto == null)
+                {
+                    buzonRevision.setTerminar(true);
+                }
+                else
+                {
+                    revisarProducto(producto);
+                }
+            }
+            else
+            {
+                while((producto=buzonRevision.sacar())==null)
+                {
+                    Thread.yield();
+                }
+                revisarProducto(producto);
             }
         }
     }

@@ -20,7 +20,7 @@ public class Productor extends Thread
                 {
                     e.printStackTrace();
                 }
-                //toca ver si al buzon le cabe el producto, tiene un limite, cual?
+                System.out.println("Producto "+producto.darId()+" reprocesado.");
                 buzonRevision.almacenar(producto);
             }
         }
@@ -36,7 +36,7 @@ public class Productor extends Thread
             {
                 e.printStackTrace();
             }
-            //toca ver si al buzon le cabe el producto, tiene un limite, cual?
+            System.out.println("Producto "+producto.darId()+" creado.");
             buzonRevision.almacenar(producto);
         }
     }

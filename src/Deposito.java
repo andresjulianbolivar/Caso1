@@ -6,11 +6,12 @@ public class Deposito
 
     public synchronized void entregar(Producto producto){
         productos.add(producto);
+        System.out.println("Producto "+producto.darId()+" entra al depósito.");
         notify();
     }
 
-    public ArrayList<Producto> getProductos() {
-        return productos;
+    public synchronized int getProductos() {
+        return productos.size();
     }
 
     public void setProductos(ArrayList<Producto> productos) {
