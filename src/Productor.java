@@ -7,11 +7,29 @@ public class Productor extends Thread
 
     public void procesarProducto(Producto producto)
     {
-        if (producto != null)
+        if (buzonReproceso.darFaltanProductos())
         {
-            if (producto.darMensaje()==null)
+            if (producto != null)
             {
-                int tiempo = (int) (Math.random()*100+1);
+                if (producto.darMensaje()==null)
+                {
+                    int tiempo = (int) (Math.random()*100+1);
+                    try 
+                    {
+                        Thread.sleep(tiempo);
+                    } 
+                    catch (InterruptedException e) 
+                    {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Producto "+producto.darId()+" reprocesado.");
+                    buzonRevision.almacenar(producto);
+                }
+            }
+            else
+            {
+                producto = new Producto(buzonReproceso.darContadorId());
+                int tiempo = (int) (Math.random()*500+1);
                 try 
                 {
                     Thread.sleep(tiempo);
@@ -20,24 +38,9 @@ public class Productor extends Thread
                 {
                     e.printStackTrace();
                 }
-                System.out.println("Producto "+producto.darId()+" reprocesado.");
+                System.out.println("Producto "+producto.darId()+" creado.");
                 buzonRevision.almacenar(producto);
             }
-        }
-        else
-        {
-            producto = new Producto(buzonReproceso.darContadorId());
-            int tiempo = (int) (Math.random()*500+1);
-            try 
-            {
-                Thread.sleep(tiempo);
-            } 
-            catch (InterruptedException e) 
-            {
-                e.printStackTrace();
-            }
-            System.out.println("Producto "+producto.darId()+" creado.");
-            buzonRevision.almacenar(producto);
         }
     }
 

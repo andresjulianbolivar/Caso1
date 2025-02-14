@@ -7,6 +7,7 @@ public class Inspector extends Thread
     private static int pedido;
     private int productosRechazados;
     private Producto producto;
+    private boolean fin=false;
 
     public static void setStatics(int nPedido, BuzonReproceso reproceso, BuzonRevision revision, Deposito nDeposito) {
         pedido = nPedido;
@@ -17,12 +18,20 @@ public class Inspector extends Thread
 
     public void revisarProducto(Producto producto)
     {
-        if (deposito.getProductos()==pedido)
+        if (deposito.getProductos()>=pedido)
         {
-            producto.setMensaje("Fin");
-            buzonReproceso.agregar(producto);
-            buzonReproceso.setFin(true);
-            System.out.println("Se ha alcanzado el pedido.");
+            if (!fin)
+            {
+                producto.setMensaje("Fin");
+                buzonReproceso.agregar(producto);
+                buzonReproceso.setFin(true);
+                System.out.println("Se ha alcanzado el pedido.");
+                fin = true;
+            }
+            else
+            {
+                deposito.entregar(producto);
+            }
         }
         else
         {
