@@ -9,6 +9,13 @@ public class Inspector extends Thread
     private int productosRechazados;
     private Producto producto;
 
+    public static void setStatics(int pedido, BuzonReproceso reproceso, BuzonRevision revision, Deposito deposito) {
+        this.pedido = pedido;
+        this.buzonReproceso = reproceso;
+        this.buzonRevision = revision;
+        this.deposito = deposito;
+    }
+
     public void revisarProducto(Producto producto)
     {
 

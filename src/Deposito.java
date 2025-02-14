@@ -4,8 +4,8 @@ public class Deposito
 {
     private ArrayList<Producto> productos;
 
-    public synchronized void entregar(Producto producto)
-    {
-        
+    public synchronized void entregar(Producto producto){
+        productos.add(producto);
+        notify();
     }
 }

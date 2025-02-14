@@ -5,6 +5,10 @@ public class BuzonRevision
     private int limite;
     private ArrayList<Producto> productos;
 
+    public BuzonRevision(int limite) {
+        this.limite = limite;
+    }
+
     public synchronized void almacenar(Producto producto)
     {
         while(productos.size()==limite)
