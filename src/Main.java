@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.concurrent.CyclicBarrier;
 
 public class Main 
 {
@@ -24,9 +25,12 @@ public class Main
         // Crear Buzon Revision
         BuzonReproceso reproceso = new BuzonReproceso();
 
+        //Crear Barrera para los productores
+        CyclicBarrier barrera = new CyclicBarrier(operarios);
+
         Inspector.setStatics(nPedido, reproceso, revision, deposito);
 
-        Productor.inicializarMonitores(reproceso, revision);
+        Productor.inicializarMonitores(reproceso, revision, barrera);
 
         // Crear Inspectores y correrlos
         for (int i = 0; i < operarios; i++) {

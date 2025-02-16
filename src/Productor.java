@@ -1,7 +1,10 @@
+import java.util.concurrent.CyclicBarrier;
+
 public class Productor extends Thread
 {
     private static BuzonReproceso buzonReproceso;
     private static BuzonRevision buzonRevision;
+    private static CyclicBarrier barrera;
 
     private Producto producto;
 
@@ -44,10 +47,11 @@ public class Productor extends Thread
         }
     }
 
-    public static void inicializarMonitores(BuzonReproceso nBuzonReproceso, BuzonRevision nBuzonRevision)
+    public static void inicializarMonitores(BuzonReproceso nBuzonReproceso, BuzonRevision nBuzonRevision, CyclicBarrier nBarrera)
     {
         buzonReproceso = nBuzonReproceso;
         buzonRevision = nBuzonRevision;
+        barrera = nBarrera;
     }
 
     public void run()
@@ -56,6 +60,18 @@ public class Productor extends Thread
         {
             producto = buzonReproceso.reprocesar();
             procesarProducto(producto);
+        }
+        try 
+        {
+            barrera.await();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        if (!buzonRevision.darTerminar())
+        {
+            buzonRevision.setTerminar(true);
         }
     }
 }

@@ -63,25 +63,14 @@ public class Inspector extends Thread
 
     public void run()
     {
-        while (!buzonRevision.darTerminar()) { //variable FIN? pendiente
-            if (buzonReproceso.darFin())
+        while(!buzonRevision.darTerminar())
+        {
+            while((producto=buzonRevision.sacar())==null && !buzonRevision.darTerminar())
             {
-                producto = buzonRevision.sacar();
-                if (producto == null)
-                {
-                    buzonRevision.setTerminar(true);
-                }
-                else
-                {
-                    revisarProducto(producto);
-                }
+                Thread.yield();
             }
-            else
+            if (!buzonRevision.darTerminar())
             {
-                while((producto=buzonRevision.sacar())==null)
-                {
-                    Thread.yield();
-                }
                 revisarProducto(producto);
             }
         }
