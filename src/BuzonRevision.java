@@ -55,10 +55,5 @@ public class BuzonRevision
     public int getLimite() {
         return limite;
     }
-
-    public void setLimite(int limite) {
-        this.limite = limite;
-    }
-
     
 }

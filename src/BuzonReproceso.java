@@ -4,7 +4,6 @@ public class BuzonReproceso
 {
     private ArrayList<Producto> productos = new ArrayList<Producto>();
     private boolean faltanProductos = true;
-    private boolean fin = false;
     private int contadorId = 0;
 
     public synchronized void agregar(Producto producto)
@@ -41,15 +40,5 @@ public class BuzonReproceso
         int id = contadorId;
         contadorId++;
         return id;
-    }
-
-    public synchronized boolean darFin()
-    {
-        return fin;
-    }
-
-    public synchronized void setFin(boolean nFin)
-    {
-        fin = nFin;
     }
 }

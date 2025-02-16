@@ -24,7 +24,6 @@ public class Inspector extends Thread
             {
                 producto.setMensaje("Fin");
                 buzonReproceso.agregar(producto);
-                buzonReproceso.setFin(true);
                 System.out.println("Se ha alcanzado el pedido.");
                 fin = true;
             }

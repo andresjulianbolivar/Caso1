@@ -14,8 +14,4 @@ public class Deposito
         return productos.size();
     }
 
-    public void setProductos(ArrayList<Producto> productos) {
-        this.productos = productos;
-    }
-
 }
