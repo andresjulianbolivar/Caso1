@@ -41,4 +41,9 @@ public class BuzonReproceso
         contadorId++;
         return id;
     }
+
+    public synchronized int getProductos()
+    {
+        return productos.size();
+    }
 }

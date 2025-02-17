@@ -52,8 +52,9 @@ public class BuzonRevision
         }
     }
 
-    public int getLimite() {
-        return limite;
+    public synchronized int getProductos()
+    {
+        return productos.size();
     }
     
 }

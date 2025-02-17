@@ -39,8 +39,15 @@ public class Main
 
             inspector.start();
             productor.start();
+
+            inspector.join();
+            productor.join();
         }
 
         scanner.close();
+
+        System.err.println("Productos en depósito: "+deposito.getProductos());
+        System.err.println("Productos en buzón de revisión: "+revision.getProductos());
+        System.err.println("Productos en buzón de reproceso: "+reproceso.getProductos());
     }
 }
