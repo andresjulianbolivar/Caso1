@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.CyclicBarrier;
 
@@ -32,22 +33,32 @@ public class Main
 
         Productor.inicializarMonitores(reproceso, revision, barrera);
 
+        ArrayList<Productor> productores = new ArrayList<Productor>();
+        ArrayList<Inspector> inspectores = new ArrayList<Inspector>();
+
         // Crear Inspectores y correrlos
         for (int i = 0; i < operarios; i++) {
             Inspector inspector = new Inspector();
             Productor productor = new Productor();
 
+            productores.add(productor);
+            inspectores.add(inspector);
+
             inspector.start();
             productor.start();
+        }
 
-            inspector.join();
-            productor.join();
+        for (int i = 0; i < operarios; i++)
+        {
+            inspectores.get(i).join();
+            productores.get(i).join();
         }
 
         scanner.close();
 
-        System.err.println("Productos en depósito: "+deposito.getProductos());
-        System.err.println("Productos en buzón de revisión: "+revision.getProductos());
-        System.err.println("Productos en buzón de reproceso: "+reproceso.getProductos());
+        System.out.println("Productor creados: "+reproceso.darContadorId());
+        System.out.println("Productos en depósito: "+deposito.getProductos());
+        System.out.println("Productos en buzón de revisión: "+revision.getProductos());
+        System.out.println("Productos en buzón de reproceso: "+reproceso.getProductos());
     }
 }
